@@ -27,6 +27,7 @@
         docker compose build
 
 ## Run the Example
+
 1. Run the minimal subscriber example
 
         docker compose up -d dev
@@ -40,9 +41,9 @@
 
 ## Stopping Containers
 
-If you make changes to the container (e.g., installing additional packages
-manually) and you want to persist those changes, you will just want to "stop"
-the container:
+Back on the host system: if you make changes to the container (e.g., installing
+additional packages manually) and you want to persist those changes, you will
+just want to "stop" the container:
 
     docker compose stop
 
