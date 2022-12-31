@@ -1,0 +1,28 @@
+version: "3.4"
+
+services:
+  dev-nvidia:
+    build:
+        context: ../workspace
+        dockerfile: ../ros_docker_setup/Dockerfile
+        args:
+          USER_ID: ${USER_ID:-0}
+          GROUP_ID: ${GROUP_ID:-0}
+    image: syllo/ros:humble
+    container_name: syllo_ros_humble_nvidia
+    network_mode: "host"           # access to host's network
+    stdin_open: true               # docker run -i
+    tty: true                      # docker run -t
+    privileged: true               # Needed for /dev volume
+    runtime: nvidia
+    environment:
+      - DISPLAY=${DISPLAY}             # Pass the display for GUI
+      - QT_X11_NO_MITSHM=1             # Needed by QT programs
+      - XAUTHORITY=/tmp/.docker.xauth
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+       - /tmp/.X11-unix:/tmp/.X11-unix:rw
+       - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+       - ../workspaces/src:/home/ros/workspace/src
+       - ../data:/home/ros/data
