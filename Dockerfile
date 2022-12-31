@@ -27,7 +27,6 @@ USER $USERNAME
 RUN sudo apt-get update \
     && rosdep update \
     && echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> /home/$USERNAME/.bashrc \
-    && echo 'source /usr/share/gazebo/setup.sh' >> /home/$USERNAME/.bashrc \
     && echo 'source /usr/share/colcon_cd/function/colcon_cd.sh' >> /home/$USERNAME/.bashrc
 
 # Create the workspace
@@ -39,4 +38,4 @@ COPY --chown=ros ./src src
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
     && sudo rosdep install --from-paths . --ignore-src -r -y --rosdistro=${ROS_DISTRO} \
     && colcon build --symlink-install \
-    && echo 'source ~/workspaces/ar3_ws/install/local_setup.bash' >> /home/$USERNAME/.bashrc
+    && echo 'source ~/workspace/install/local_setup.bash' >> /home/$USERNAME/.bashrc
