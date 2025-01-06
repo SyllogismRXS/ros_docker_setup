@@ -12,6 +12,7 @@ services:
     network_mode: "host"           # access to host's network
     stdin_open: true               # docker run -i
     tty: true                      # docker run -t
+    privileged: true               # Needed for /dev volume
     environment:
       - DISPLAY=${DISPLAY}             # Pass the display for GUI
       - QT_X11_NO_MITSHM=1             # Needed by QT programs
@@ -31,6 +32,7 @@ services:
     network_mode: "host"           # access to host's network
     stdin_open: true               # docker run -i
     tty: true                      # docker run -t
+    privileged: true               # Needed for /dev volume
     runtime: nvidia
     environment:
       - DISPLAY=${DISPLAY}             # Pass the display for GUI
