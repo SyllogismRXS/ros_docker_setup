@@ -15,6 +15,10 @@ RUN apt-get update \
 ARG USER_ID=1000
 ARG GROUP_ID=1000
 
+# Remove the ubuntu user added by OSRF
+RUN userdel ubuntu \
+    && rm -rf /home/ubuntu
+
 ENV USERNAME ros
 ENV HOME_DIR /home/${USERNAME}
 
