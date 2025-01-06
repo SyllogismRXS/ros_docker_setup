@@ -18,12 +18,13 @@
 2. Clone ROS example repositories:
 
         cd ~/ros/ros_docker_example/workspace/src
-        git clone -b humble https://github.com/ros2/examples.git
+        git clone -b jazzy https://github.com/ros2/examples.git
 
 3. Build the docker image
 
         cd ~/ros/ros_docker_example/ros_docker_setup
         echo -e "USER_ID=$(id -u ${USER})\nGROUP_ID=$(id -g ${USER})" > .env
+        echo -e "ROS_DISTRO=jazzy" >> .env # Modify for your desired ROS distribution
         docker compose build
 
 ## Run the Example
@@ -31,12 +32,12 @@
 1. Run the minimal subscriber example
 
         docker compose up -d dev
-        docker exec -it ros_humble /bin/bash
+        docker exec -it ros_jazzy /bin/bash
         ros2 run examples_rclcpp_minimal_subscriber subscriber_member_function
 
 2. In a different terminal, run the minimal publisher example:
 
-        docker exec -it ros_humble /bin/bash
+        docker exec -it ros_jazzy /bin/bash
         ros2 run examples_rclcpp_minimal_publisher publisher_member_function
 
 ## Stopping Containers

@@ -1,5 +1,8 @@
-FROM osrf/ros:humble-desktop-full
-MAINTAINER Kevin DeMarco
+ARG ROS_DISTRO=jazzy
+ARG IMAGE_NAME=osrf/ros:${ROS_DISTRO}-desktop-full
+
+FROM ${IMAGE_NAME}
+LABEL org.opencontainers.image.authors="kevin.demarco@rifrobotics.com"
 ENV DEBIAN_FRONTEND noninteractive
 SHELL ["/bin/bash", "-c"]
 
@@ -13,6 +16,8 @@ ARG USER_ID=1000
 ARG GROUP_ID=1000
 
 ENV USERNAME ros
+ENV HOME_DIR /home/${USERNAME}
+
 RUN adduser --disabled-password --gecos '' $USERNAME \
     && usermod  --uid ${USER_ID} $USERNAME \
     && groupmod --gid ${GROUP_ID} $USERNAME \
@@ -27,7 +32,12 @@ USER $USERNAME
 RUN sudo apt-get update \
     && rosdep update \
     && echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> /home/$USERNAME/.bashrc \
-    && echo 'source /usr/share/colcon_cd/function/colcon_cd.sh' >> /home/$USERNAME/.bashrc
+    && echo 'source /usr/share/colcon_cd/function/colcon_cd.sh' >> /home/$USERNAME/.bashrc \
+    && echo 'source /usr/share/colcon_cd/function/colcon_cd.sh' >> ${HOME_DIR}/.bashrc \
+    && echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ${HOME_DIR}/.bashrc \
+    && echo 'export RCUTILS_COLORIZED_OUTPUT=1' >> ${HOME_DIR}/.bashrc \
+    && echo "export CYCLONEDDS_URI='<CycloneDDS><Domain><Discovery><ParticipantIndex>none</ParticipantIndex></Discovery></Domain></CycloneDDS>'" >> ${HOME_DIR}/.bashrc \
+    && echo 'alias colcon-build="colcon build --symlink-install"' >> ${HOME_DIR}/.bashrc
 
 # Create the workspace
 RUN mkdir -p /home/$USERNAME/workspace

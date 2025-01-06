@@ -1,15 +1,14 @@
-version: "3.4"
-
 services:
   dev:
     build:
         context: ../workspace
         dockerfile: ../ros_docker_setup/Dockerfile
         args:
+          ROS_DISTRO: ${ROS_DISTRO}
           USER_ID: ${USER_ID:-0}
           GROUP_ID: ${GROUP_ID:-0}
-    image: syllo/ros:humble
-    container_name: ros_humble
+    image: syllo/ros:${ROS_DISTRO}
+    container_name: ros_${ROS_DISTRO}
     network_mode: "host"           # access to host's network
     stdin_open: true               # docker run -i
     tty: true                      # docker run -t
@@ -17,6 +16,7 @@ services:
       - DISPLAY=${DISPLAY}             # Pass the display for GUI
       - QT_X11_NO_MITSHM=1             # Needed by QT programs
       - XAUTHORITY=/tmp/.docker.xauth
+      - TERM=xterm-256color            # Enable terminal colors
     volumes:
        - /tmp/.X11-unix:/tmp/.X11-unix:rw
        - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
@@ -25,8 +25,8 @@ services:
 
 
   dev-nvidia:
-    image: syllo/ros:humble
-    container_name: ros_humble_nvidia
+    image: syllo/ros:${ROS_DISTRO}
+    container_name: ros_${ROS_DISTRO}_nvidia
     network_mode: "host"           # access to host's network
     stdin_open: true               # docker run -i
     tty: true                      # docker run -t
@@ -37,6 +37,7 @@ services:
       - XAUTHORITY=/tmp/.docker.xauth
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all
+      - TERM=xterm-256color            # Enable terminal colors
     volumes:
        - /tmp/.X11-unix:/tmp/.X11-unix:rw
        - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
