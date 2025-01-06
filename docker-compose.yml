@@ -22,6 +22,7 @@ services:
        - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
        - ../workspace/src:/home/ros/workspace/src
        - ../data:/home/ros/data
+       - /dev:/dev  # Needed for sensors
 
 
   dev-nvidia:
@@ -43,3 +44,4 @@ services:
        - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
        - ../workspace/src:/home/ros/workspace/src
        - ../data:/home/ros/data
+       - /dev:/dev  # Needed for sensors
